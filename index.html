@@ -1,0 +1,858 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<!-- Favicon 图标 for most browsers -->
+<link rel="icon" href="s_webicon-t.ico" type="image/x-icon">
+
+<!-- Apple Touch Icon（如用于 iOS 主屏幕） -->
+<link rel="apple-touch-icon" href="/s_webicon-t.ico">
+
+<!-- 移动设备响应式支持 -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- 可选：设置移动端浏览器地址栏的主题颜色 -->
+<meta name="theme-color" content="#ffffff">
+
+  
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+<style>
+  /* Loading 界面 */
+  #loading-screen {
+    position: fixed;
+    z-index: 9999;
+    background-color: #a2dce6; /* 杰尼龟浅蓝 */
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.6s ease;
+  }
+
+  #loading-screen img {
+    width: 100px;
+    height: 100px;
+    animation: popin 1.8s ease-in-out infinite;
+  }
+
+  @keyframes popin {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.15);
+    }
+  }
+
+  #loading-screen.fade-out {
+    opacity: 0;
+    pointer-events: none;
+  }
+</style>
+
+  <meta charset="UTF-8" />
+<title>我在南京推荐的20件事情</title>
+  <style>
+    body {
+      background-color: #e8f8fc;
+      font-family: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      margin: 0;
+      padding: 40px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      scroll-behavior: smooth;
+    }
+    
+    h1 {
+      position: relative;
+      font-size: 40px;
+      color: #3e8e9e;
+      margin-bottom: 30px;
+      text-align: center;
+      font-weight: 700;
+      letter-spacing: 3px;
+      background: linear-gradient(90deg, #3e8e9e, #7ec8e3, #3e8e9e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 1px 1px 2px rgba(50, 120, 140, 0.5), 0 0 8px rgba(170, 220, 240, 0.7);
+      animation: breath 3s ease-in-out infinite;
+    }
+
+    .title-icon {
+      position: absolute;
+      top: -28px;
+      left: -70px;
+      width: 78px;
+      height: 78px;
+      user-select: none;
+    }
+    @keyframes breath {
+      0%, 100% {
+        text-shadow: 1px 1px 2px rgba(50, 120, 140, 0.5), 0 0 8px rgba(170, 220, 240, 0.7);
+      }
+      50% {
+        text-shadow: 1px 1px 6px rgba(50, 120, 140, 0.8), 0 0 12px rgba(170, 220, 240, 1);
+      }
+    }
+
+    .card {
+      position: relative;
+      background: #ffffff;
+      border: 2px dashed #a2cfe3;
+      border-radius: 20px;
+      box-shadow: 4px 6px 12px rgba(100, 170, 200, 0.1);
+      width: 90%;
+      max-width: 680px;
+      margin: 24px auto;
+      padding: 26px 28px;
+    }
+
+    .pin-icon {
+      position: absolute;
+      top: -40px;
+      left: 16px;
+      width: 55px;
+      height: 55px;
+      transform: rotate(-10deg);
+      z-index: 2;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .card h2 {
+      margin-top: 0;
+      font-size: 22px;
+      color: #3e8e9e;
+    }
+
+    .card p {
+      margin: 6px 0;
+      color: #4b6e78;
+      line-height: 1.6;
+      font-size: 16px;
+    }
+
+    .short {
+      font-weight: bold;
+      font-size: 18px;
+      color: #70b7d4;
+    }
+
+    .tip {
+      font-style: italic;
+      font-size: 14px;
+      color: #789ca7;
+    }
+
+    /* 轮播容器，横向可滚动，显示 scrollbar */
+    .carousel-container {
+      overflow-x: auto;
+      width: 100%;
+      margin: 12px 0;
+      scrollbar-width: thin;
+      scrollbar-color: #7ec8e3 #d7f0fb;
+    }
+    /* Firefox滚动条样式 */
+    .carousel-container::-webkit-scrollbar {
+      height: 8px;
+    }
+    .carousel-container::-webkit-scrollbar-track {
+      background: #d7f0fb;
+      border-radius: 4px;
+    }
+    .carousel-container::-webkit-scrollbar-thumb {
+      background-color: #7ec8e3;
+      border-radius: 4px;
+    }
+
+    .carousel {
+      display: flex;
+      width: max-content;
+      gap: 10px;
+      animation: scroll-left 60s linear infinite;
+      /* 注意动画会跟用户手动滚动冲突，暂时没自动暂停 */
+    }
+
+    .carousel:hover {
+      animation-play-state: paused; /* 鼠标悬停时暂停滚动 */
+    }
+
+.carousel img.clicked {
+      transform: scale(1.5);
+      z-index: 9999; /* 更大一点以确保在最上层 */
+      position: relative; /* 保证 z-index 生效 */
+    }
+    .carousel img {
+      height: 200px;
+      width: auto;
+      object-fit: cover;
+      border-radius: 10px;
+      transition: transform 0.3s ease;
+      box-shadow: 2px 4px 10px rgba(80, 140, 160, 0.1);
+      cursor: pointer;
+      user-select: none;
+    }
+
+
+    @keyframes scroll-left {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+
+    .image-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  padding-top: 60px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.85);
+}
+
+.image-modal .modal-content {
+  margin: auto;
+  display: block;
+  max-width: 90%;
+  max-height: 80vh;
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.6);
+  transition: all 0.3s;
+}
+
+.image-modal .close-btn {
+  position: absolute;
+  top: 20px;
+  right: 35px;
+  color: #fff;
+  font-size: 40px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.image-modal .close-btn:hover {
+  color: #ccc;
+}
+
+
+    #scrollTopBtn {
+      display: none;
+      position: fixed;
+      bottom: 40px;
+      right: 40px;
+      z-index: 100;
+      background-color: #3e8e9e;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      cursor: pointer;
+      font-size: 24px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+      transition: background-color 0.3s ease;
+    }
+
+    #scrollTopBtn:hover {
+      background-color: #2a6f7f;
+    }
+
+    #scrollTopBtn img {
+      width: 60px;
+      height: 60px;
+      pointer-events: none;
+    }
+
+    footer {
+      margin-top: 40px;
+      padding: 16px 0;
+      width: 100%;
+      background: #3e8e9e;
+      color: #d3eaf2;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      box-shadow: inset 0 1px 3px rgba(255,255,255,0.15);
+      user-select: none;
+      font-family: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    }
+    footer p {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Loading 页面 -->
+<div id="loading-screen">
+  <img src="falling-t.png" alt="Loading..." id="loading-logo" />
+  <div class="bubble-container"></div> <!-- 添加泡泡容器 -->
+</div>
+
+
+<!-- 掉落星星容器 -->
+<div class="falling-stars-container"></div>
+
+  <h1>
+    <img src="header-t.png" alt="杰尼龟" class="title-icon" />
+    我在南京推荐的20件事情 ✨
+  </h1>
+
+    <div class="card">
+        <img src="pin-t.png" alt="图钉" class="pin-icon" />
+        <h2>1. 南京唯一一家爵士酒吧</h2>
+        <p class="short">作为南京唯一的爵士酒吧，简直是太爽了，推荐：MAGPIE</p>
+        <div class="carousel-container">
+            <div class="carousel" id="carousel-1">
+                <img src="https://i.imgur.com/oCBgvVR.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/ufDir9m.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/iyOm5NJ.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/jFzqkkZ.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/oCBgvVR.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/ufDir9m.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/iyOm5NJ.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/jFzqkkZ.jpeg" loading="lazy" alt="photo" class="zoomable-img" />
+            </div>
+        </div>
+        <p><strong>推荐原因：</strong> 只需要点一杯酒就能拥有视听盛宴，适合约会</p>
+        <p class="tip">Tips：周三五六才有演出哦！</p>
+    </div>
+    
+    <div class="card">
+        <img src="pin-t.png" alt="图钉" class="pin-icon" />
+        <h2>2. 玄武湖、羊山公园跑步，看日落</h2>
+        <p class="short">走在湖边，风轻轻吹过，感觉一切烦恼都慢慢消散了。</p>
+        <div class="carousel-container">
+            <div class="carousel" id="carousel-2">
+                <img src="https://i.imgur.com/3RTCfb6.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/AiVTamq.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/SDx80E5.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/tblZHab.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/5a7AIEi.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/3TCOi98.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/qpBBt9b.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/wd4qlzk.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/qpTEuQq.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/SocbTmm.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/3RTCfb6.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/AiVTamq.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/SDx80E5.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/tblZHab.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/5a7AIEi.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/3TCOi98.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/qpBBt9b.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/wd4qlzk.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/qpTEuQq.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/SocbTmm.jpeg" loading="lazy" alt="photo" class="zoomable-img" />
+            </div>
+        </div>
+        <p><strong>推荐原因：</strong> 在这里，看古城，看今朝，感受我最爱的南京；羊山公园离学校近，每次都喜欢去那边跑跑步放放空。</p>
+        <p class="tip">Tips：最佳位置：玄武门地铁站（阳光码头）</p>
+    </div>
+    
+    <div class="card">
+        <img src="pin-t.png" alt="图钉" class="pin-icon" />
+        <h2>3. 皮肚面+隔壁的鸭子店</h2>
+        <p class="short">最喜欢吃皮肚了，南京的鸭子最好吃</p>
+        <div class="carousel-container">
+            <div class="carousel" id="carousel-3">
+                <img src="https://i.imgur.com/oFXs7hy.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/ALnLTSU.jpg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/wCnty2r.jpg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/dubXrJM.jpg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/LYNgDBe.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/oFXs7hy.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/ALnLTSU.jpg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/wCnty2r.jpg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/dubXrJM.jpg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/LYNgDBe.jpeg" loading="lazy" alt="photo" class="zoomable-img" />
+            </div>
+        </div>
+        <p><strong>推荐原因：</strong> 王之组合，没有鸭子配上大肉也没问题哈哈哈</p>
+        <p class="tip">Tips：小区楼下的最好吃，前脯和后腿好吃！另外推荐建邺区的闽南海鲜面馆</p>
+    </div>
+    
+    <div class="card">
+        <img src="pin-t.png" alt="图钉" class="pin-icon" />
+        <h2>6. 去浦口坐1块钱的渡轮</h2>
+        <p class="short">可以看日落，也可以去朱自清笔下的火车站</p>
+        <div class="carousel-container">
+            <div class="carousel" id="carousel-6">
+                <img src="https://i.imgur.com/xdjtJGo.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/m2dMjLw.jpg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/Vxs8y47.jpg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/KCCDneO.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/bv0JdGf.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/rYC0EWI.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/xdjtJGo.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/m2dMjLw.jpg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/Vxs8y47.jpg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/KCCDneO.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/bv0JdGf.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/rYC0EWI.jpeg" loading="lazy" alt="photo" class="zoomable-img" />
+            </div>
+        </div>
+        <p><strong>推荐原因：</strong> 虽然离仙林比较远，但偶尔可以去吹吹风～</p>
+        <p class="tip">Tips：查好发船时间，别空等</p>
+    </div>
+    
+    <div class="card">
+        <img src="pin-t.png" alt="图钉" class="pin-icon" />
+        <h2>7. 去红山动物园</h2>
+        <p class="short">可以看到各种各样的动物</p>
+        <div class="carousel-container">
+            <div class="carousel" id="carousel-7">
+                <img src="https://i.imgur.com/tvR8I39.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/7JevjOQ.png" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/0aZxCUg.png" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/a8CLGmA.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/63wJ7Us.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/4P3V2rY.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/tvR8I39.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/7JevjOQ.png" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/0aZxCUg.png" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/a8CLGmA.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/63wJ7Us.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/4P3V2rY.jpeg" loading="lazy" alt="photo" class="zoomable-img" />
+            </div>
+        </div>
+        <p><strong>推荐原因：</strong> 这里没有动物表演，纯观赏</p>
+        <p class="tip">Tips：记得带花露水，穿舒服的鞋子</p>
+    </div>
+    
+    <div class="card">
+        <img src="pin-t.png" alt="图钉" class="pin-icon" />
+        <h2>8. 去中山植物园看花海</h2>
+        <p class="short">一次过看奇花异草，色彩斑斓，看了心情超级好</p>
+        <div class="carousel-container">
+            <div class="carousel" id="carousel-8">
+                <img src="https://i.imgur.com/5ZGoBxj.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/H2l5EJo.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/429NbLq.png" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/dyo0UZg.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/RvIMCCC.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/Gvlgw6v.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/5ZGoBxj.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/H2l5EJo.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/429NbLq.png" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/dyo0UZg.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/RvIMCCC.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/Gvlgw6v.jpeg" loading="lazy" alt="photo" class="zoomable-img" />
+            </div>
+        </div>
+        <p><strong>推荐原因：</strong> 出片神地</p>
+        <p class="tip">Tips：人很多，难打车，难拍照</p>
+    </div>
+    
+    <div class="card">
+        <img src="pin-t.png" alt="图钉" class="pin-icon" />
+        <h2>9. 去汤山泡温泉</h2>
+        <p class="short">冬天绝佳享受，在热热的温泉根本不想出来</p>
+        <div class="carousel-container">
+            <div class="carousel" id="carousel-9">
+                <img src="https://i.imgur.com/1iTHDc9.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/j4gnDI0.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/p705Bwr.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/a5pbdp5.png" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/1iTHDc9.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/j4gnDI0.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/p705Bwr.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/a5pbdp5.png" loading="lazy" alt="photo" class="zoomable-img" />
+            </div>
+        </div>
+        <p><strong>推荐原因：</strong> 跟朋友去最好，边泡边聊</p>
+        <p class="tip">Tips：推荐：汤山一号，不求质量的话，性价比挺高的！</p>
+    </div>
+    
+    <div class="card">
+        <img src="pin-t.png" alt="图钉" class="pin-icon" />
+        <h2>10. 去江苏大剧院听演奏会</h2>
+        <p class="short">在这里听过不少名家的演出</p>
+        <div class="carousel-container">
+            <div class="carousel" id="carousel-10">
+                <img src="https://i.imgur.com/RC1Np1S.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/7URQqyR.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/8KqN2md.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/Sx5jKLC.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/bjz85Gn.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/RC1Np1S.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/7URQqyR.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/8KqN2md.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/Sx5jKLC.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/bjz85Gn.jpeg" loading="lazy" alt="photo" class="zoomable-img" />
+            </div>
+        </div>
+        <p><strong>推荐原因：</strong> 可以放松心情，提高音乐审美</p>
+        <p class="tip">Tips：学生票很值得！！</p>
+    </div>
+    
+    <div class="card">
+        <img src="pin-t.png" alt="图钉" class="pin-icon" />
+        <h2>11. 去欢乐谷坐超刺激的过山车</h2>
+        <p class="short">推荐“掠食者”</p>
+        <div class="carousel-container">
+            <div class="carousel" id="carousel-11">
+                <img src="https://i.imgur.com/QN1u1n6.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/I6ZF37u.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/lD0olFV.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/fOh5bIH.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/QN1u1n6.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/I6ZF37u.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/lD0olFV.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/fOh5bIH.jpeg" loading="lazy" alt="photo" class="zoomable-img" />
+            </div>
+        </div>
+        <p><strong>推荐原因：</strong> 从来没坐过那么刺激的过山车</p>
+        <p class="tip">Tips：很难忘的经验，虽然研究生没学生票了</p>
+    </div>
+    
+    <div class="card">
+        <img src="pin-t.png" alt="图钉" class="pin-icon" />
+        <h2>12. 从学校往长江方向骑自行车</h2>
+        <p class="short">感受夜晚的栖霞山，有点可怕哈哈哈</p>
+        <div class="carousel-container">
+            <div class="carousel" id="carousel-12">
+                <img src="https://i.imgur.com/mTaKKgk.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/eeAe4sa.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/6wmLE7P.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/jEz0p3p.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/mNPGW46.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/mTaKKgk.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/eeAe4sa.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/6wmLE7P.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/jEz0p3p.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/mNPGW46.jpeg" loading="lazy" alt="photo" class="zoomable-img" />
+            </div>
+        </div>
+        <p><strong>推荐原因：</strong> 夜晚，凉风习习，骑车是最舒服的事情了</p>
+        <p class="tip">Tips：记得带个灯，还有导航！</p>
+    </div>
+    
+    <div class="card">
+        <img src="pin-t.png" alt="图钉" class="pin-icon" />
+        <h2>13. 参加2025仙林马拉松</h2>
+        <p class="short">终于中签了家门口的马拉松</p>
+        <div class="carousel-container">
+            <div class="carousel" id="carousel-13">
+                <img src="https://i.imgur.com/rDOAE25.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/Qyoem9p.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/SNTXqiq.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/6L9G1R9.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/rDOAE25.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/Qyoem9p.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/SNTXqiq.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/6L9G1R9.jpeg" loading="lazy" alt="photo" class="zoomable-img" />
+            </div>
+        </div>
+        <p><strong>推荐原因：</strong> 很久没跑步了，跑到了最好的成绩，现场氛围很好！</p>
+        <p class="tip">Tips：记得组队去参加，要不然不可能中签</p>
+    </div>
+    
+    <div class="card">
+        <img src="pin-t.png" alt="图钉" class="pin-icon" />
+        <h2>14. 去一个人都没有的牛首山</h2>
+        <p class="short">真的是一个人都没有......</p>
+        <div class="carousel-container">
+            <div class="carousel" id="carousel-14">
+                <img src="https://i.imgur.com/7dZB6Kg.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/6WWcSpG.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/w973Olz.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/p4YrxAP.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/DALKuLB.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/W8aH28f.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/YgcVqFy.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/SJ5Sbh8.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/xN51Wgb.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/7dZB6Kg.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/6WWcSpG.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/w973Olz.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/p4YrxAP.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/DALKuLB.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/W8aH28f.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/YgcVqFy.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/SJ5Sbh8.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/xN51Wgb.jpeg" loading="lazy" alt="photo" class="zoomable-img" />
+            </div>
+        </div>
+        <p><strong>推荐原因：</strong> 对比现在人山人海的牛首山，那时候的体验简直含金量十足</p>
+        <p class="tip">Tips：闭园的时候真的只有我们抹黑出去......</p>
+    </div>
+    
+    <div class="card">
+        <img src="pin-t.png" alt="图钉" class="pin-icon" />
+        <h2>15. 去1912的酒吧听了两天的胶片</h2>
+        <p class="short">那时候是张国荣专场，连着去两天</p>
+        <div class="carousel-container">
+            <div class="carousel" id="carousel-15">
+                <img src="https://i.imgur.com/VzIgXAg.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/L5Gdrk1.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/5kRorfG.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/VzIgXAg.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/L5Gdrk1.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/5kRorfG.jpeg" loading="lazy" alt="photo" class="zoomable-img" />
+            </div>
+        </div>
+        <p><strong>推荐原因：</strong> 氛围很好，音响很好，酒也很好喝</p>
+        <p class="tip">Tips：推荐：WOOCLOUD</p>
+    </div>
+    
+    <div class="card">
+        <img src="pin-t.png" alt="图钉" class="pin-icon" />
+        <h2>16. 一早起来去老城区寻找烟火气</h2>
+        <p class="short">2023年12月31日，那年的最后一天，6点起来去老城区吃早饭</p>
+        <div class="carousel-container">
+            <div class="carousel" id="carousel-16">
+                <img src="https://i.imgur.com/K7K3xuY.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/vFcveEU.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/zBiRPxX.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/PQazEJD.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/F7C4LiZ.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/LOC1y1S.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/Opqfksj.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/QnX9fbv.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/V7dyAD2.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/K7K3xuY.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/vFcveEU.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/zBiRPxX.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/PQazEJD.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/F7C4LiZ.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/LOC1y1S.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/Opqfksj.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/QnX9fbv.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/V7dyAD2.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="" loading="lazy" alt="photo" class="zoomable-img" />
+            </div>
+        </div>
+        <p><strong>推荐原因：</strong> 汤包、豆浆、油条、旧书籍...... 还有烟火气</p>
+        <p class="tip">Tips：推荐：茶南、莫愁湖、朝天宫</p>
+    </div>
+    
+    <div class="card">
+        <img src="pin-t.png" alt="图钉" class="pin-icon" />
+        <h2>17. 夜爬紫金山</h2>
+        <p class="short">天黑看不到景，但气温舒服</p>
+        <div class="carousel-container">
+            <div class="carousel" id="carousel-17">
+                <img src="https://i.imgur.com/UBwa1HR.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/NQSm29z.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/YiOo2eM.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/Q6sBE1G.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/AfLFRZh.jpg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/UBwa1HR.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/NQSm29z.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/YiOo2eM.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/Q6sBE1G.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/AfLFRZh.jpg" loading="lazy" alt="photo" class="zoomable-img" />
+            </div>
+        </div>
+        <p><strong>推荐原因：</strong> 练臀+有氧，不是很累，到顶的时候刚好看日出，太美好咯</p>
+        <p class="tip">Tips：记得带手电筒，外套，山顶很冷</p>
+    </div>
+    
+    <div class="card">
+        <img src="pin-t.png" alt="图钉" class="pin-icon" />
+        <h2>18. 每周的“煮会”</h2>
+        <p class="short">俗称八卦大会，主要是能吃家乡菜</p>
+        <div class="carousel-container">
+            <div class="carousel" id="carousel-18">
+                <img src="https://i.imgur.com/PEXLDWJ.png" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/387xEIP.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/gmtMqek.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/pxJjxVh.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/PDrLe6e.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/LtBPP4u.png" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/6pxDTi4.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/PEXLDWJ.png" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/387xEIP.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/gmtMqek.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/pxJjxVh.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/PDrLe6e.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/LtBPP4u.png" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/6pxDTi4.jpeg" loading="lazy" alt="photo" class="zoomable-img" />
+            </div>
+        </div>
+        <p><strong>推荐原因：</strong> 每次都能吃超多，必胃疼（笑到胃疼）</p>
+        <p class="tip">Tips：永远的“洗碗组”</p>
+    </div>
+    
+    <div class="card">
+        <img src="pin-t.png" alt="图钉" class="pin-icon" />
+        <h2>19. 南京千年一遇的大雪</h2>
+        <p class="short">雪好大，好不真实</p>
+        <div class="carousel-container">
+            <div class="carousel" id="carousel-19">
+                <img src="https://i.imgur.com/IikaXBH.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/yn5ZFSk.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/nhq2Jcj.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/gDb3zHM.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/IikaXBH.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/yn5ZFSk.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/nhq2Jcj.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/gDb3zHM.jpeg" loading="lazy" alt="photo" class="zoomable-img" />
+            </div>
+        </div>
+        <p><strong>推荐原因：</strong> 打雪仗、堆雪人都能玩起来</p>
+        <p class="tip">Tips：电动车别骑，太滑了</p>
+    </div>
+    
+    <div class="card">
+        <img src="pin-t.png" alt="图钉" class="pin-icon" />
+        <h2>20. 学会打乒乓球</h2>
+        <p class="short">课后养成了打乒乓球的兴趣，也认识了许多不同专业朋友</p>
+        <div class="carousel-container">
+            <div class="carousel" id="carousel-20">
+                <img src="https://i.imgur.com/d2beaFP.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/a5TFnP8.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/NvjOCpA.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/slNfDov.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/JEjapak.png" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/d2beaFP.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/a5TFnP8.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/NvjOCpA.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/slNfDov.jpeg" loading="lazy" alt="photo" class="zoomable-img" /><img src="https://i.imgur.com/JEjapak.png" loading="lazy" alt="photo" class="zoomable-img" />
+            </div>
+        </div>
+        <p><strong>推荐原因：</strong> 不会很累，但可以锻炼身体+大脑，一举多得！</p>
+        <p class="tip">Tips：“吃旋转吃饱了”“转腰带跨，挥到左眼前”</p>
+    </div>
+    
+<div id="image-modal" class="image-modal">
+  <span class="close-btn">&times;</span>
+  <img class="modal-content" id="modal-img" />
+</div>
+
+<footer>
+  <p>
+  ©️ janicenee / 制作于2025年5月 / 南京 / 内容持续更新...</p>
+</footer>
+
+<!-- 回到顶部按钮 -->
+<button id="scrollTopBtn" title="回到顶部">
+  <img src="stt-t.png" alt="回到顶部" />
+</button>
+
+
+<style>
+ .falling-stars-container {
+  position: fixed;     /* 关键：固定在视口 */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;        /* 只覆盖视口高度 */
+  z-index: 999;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.falling-star {
+  position: absolute;
+  top: 0;               /* 星星从顶部开始 */
+  width: 32px;
+  height: 32px;
+  background-image: url('falling-t.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.8;
+  animation: fall linear forwards;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(0);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(100vh); /* 落到底部 */
+    opacity: 0;
+  }
+}
+
+
+  }
+
+  /* Loading Screen */
+  .bubble-container {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.bubble {
+  position: absolute;
+  bottom: -40px;
+  width: 20px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  animation: rise 6s ease-in infinite;
+  pointer-events: none;
+}
+
+@keyframes rise {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-100vh) scale(1.2);
+    opacity: 0;
+  }
+}
+
+#loading-screen {
+  position: fixed;
+  z-index: 9999;
+  background-color: #e8f8fc;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 1s ease;
+}
+
+#loading-logo {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 20px;
+  animation: float 2s ease-in-out infinite;
+}
+
+#loading-title {
+  font-size: 28px;
+  color: #3e8e9e;
+  opacity: 0;
+  animation: fadeIn 2s ease forwards;
+  animation-delay: 0.5s;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+</style>
+
+<script>
+  window.addEventListener("load", () => {
+    setTimeout(() => {
+      const loader = document.getElementById("loading-screen");
+      loader.style.opacity = "0";
+      setTimeout(() => loader.style.display = "none", 1000);
+    }, 2500); // 至少展示2.5秒
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const bubbleContainer = document.querySelector('.bubble-container');
+
+    function createBubble() {
+      const bubble = document.createElement('div');
+      bubble.classList.add('bubble');
+      const size = 10 + Math.random() * 20;
+      bubble.style.width = `${size}px`;
+      bubble.style.height = `${size}px`;
+      bubble.style.left = `${Math.random() * 100}%`;
+      bubble.style.animationDuration = `${4 + Math.random() * 3}s`;
+      bubbleContainer.appendChild(bubble);
+
+      setTimeout(() => {
+        bubble.remove();
+      }, 7000);
+    }
+
+    setInterval(createBubble, 300);
+  });
+</script>
+
+<style>
+  .bubble {
+    background: #97dce7; 
+    border-radius: 50%;
+    position: absolute;
+    bottom: -40px;
+    animation: rise 6s ease-in infinite;
+    pointer-events: none;
+  }
+</style>
+
+
+<script>
+  const starContainer = document.querySelector('.falling-stars-container');
+
+  function createFallingStar() {
+    const star = document.createElement('div');
+    star.classList.add('falling-star');
+    star.style.left = Math.random() * 100 + 'vw';
+    star.style.top = '0'; // 关键：从视口顶部开始掉
+
+    const duration = 4 + Math.random() * 3;
+    const delay = Math.random() * 2;
+
+    star.style.animationDuration = duration + 's';
+    star.style.animationDelay = delay + 's';
+
+    starContainer.appendChild(star);
+
+    setTimeout(() => {
+      star.remove();
+    }, (duration + delay) * 1000);
+  }
+
+  setInterval(createFallingStar, 800);
+</script>
+
+
+<script>
+  const modal = document.getElementById('image-modal');
+  const modalImg = document.getElementById('modal-img');
+  const closeBtn = modal.querySelector('.close-btn');
+
+  document.querySelectorAll('.zoomable-img').forEach(img => {
+    img.addEventListener('click', e => {
+      modal.style.display = 'flex';
+      modalImg.src = e.target.src;
+    });
+  });
+
+  closeBtn.addEventListener('click', () => {
+    modal.style.display = 'none';
+    modalImg.src = '';
+  });
+
+  modal.addEventListener('click', e => {
+    if (e.target === modal) {
+      modal.style.display = 'none';
+      modalImg.src = '';
+    }
+  });
+</script>
+
+
+<script>
+  const scrollBtn = document.getElementById('scrollTopBtn');
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    scrollBtn.style.display = scrollTop > 200 ? "block" : "none";
+  });
+  scrollBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+
+<!-- 放在整个 HTML 最底部 -->
+<script>
+  const images = document.querySelectorAll('.carousel img');
+
+  images.forEach(img => {
+    img.addEventListener('click', e => {
+      e.stopPropagation(); // 防止触发 document 的点击事件
+      img.classList.toggle('clicked');
+    });
+  });
+
+  document.addEventListener('click', () => {
+    images.forEach(img => img.classList.remove('clicked'));
+  });
+</script>
+
+<!-- 背景音乐播放器 -->
+<audio id="bg-music" src="al.mp3" autoplay loop></audio>
+
+<!-- 播放器控制按钮 -->
+<button id="music-toggle" title="背景音乐开关">▶</button>
+
+<style>
+  /* 杰尼龟风格配色按钮 */
+  #music-toggle {
+    position: fixed;
+    bottom: 100px; /* Scroll To Top 按钮以上 */
+    right: 40px;
+    z-index: 9999;
+    background-color: #7ecfdc; /* 杰尼龟的浅蓝 */
+    color: #fff;
+    border: 3px solid #f5c079; /* 杰尼龟壳的淡橙色 */
+    border-radius: 50%;
+    width: 52px;
+    height: 52px;
+    cursor: pointer;
+    font-size: 24px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    transition: background-color 0.3s ease;
+  }
+
+  #music-toggle:hover {
+    background-color: #5cbac8;
+  }
+</style>
+
+<script>
+  const bgMusic = document.getElementById("bg-music");
+  const musicToggle = document.getElementById("music-toggle");
+
+  let isPlaying = true;
+
+  musicToggle.addEventListener("click", () => {
+    if (isPlaying) {
+      bgMusic.pause();
+      musicToggle.textContent = "▶";
+    } else {
+      bgMusic.play();
+      musicToggle.textContent = "⏸";
+    }
+    isPlaying = !isPlaying;
+  });
+
+  // 自动播放：兼容浏览器首次点击激活音频
+  document.addEventListener("click", () => {
+    if (bgMusic.paused) {
+      bgMusic.play().catch(() => {});
+    }
+  }, { once: true });
+</script>
+
+</body>
+</html>
